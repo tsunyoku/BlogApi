@@ -13,12 +13,12 @@ services:
     ports:
       - 5150:80
     depends_on:
-      example.db:
+      blog.db:
         condition: service_healthy
 
-  example.db:
+  blog.db:
     image: postgres:latest
-    container_name: example-service-database
+    container_name: blog-database
     environment:
       - POSTGRES_PASSWORD=postgres
     volumes:
