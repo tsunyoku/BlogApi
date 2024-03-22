@@ -1,5 +1,4 @@
-﻿using BlogApi.Abstractions;
-using BlogApi.Entities;
+﻿using BlogApi.Entities;
 using BlogApi.Repositories;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
@@ -8,7 +7,7 @@ namespace BlogApi.Controllers;
 
 [Route("api/posts")]
 [ApiController]
-public class PostsController(IBlogRepository blogRepository, IBlogDbContext dbContext) : ControllerBase
+public class PostsController(IBlogRepository blogRepository) : ControllerBase
 {
     [HttpGet]
     public async Task<Results<Ok<List<Blog>>, ProblemHttpResult>> GetBlogs(CancellationToken cancellationToken)
