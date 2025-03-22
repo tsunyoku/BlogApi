@@ -24,6 +24,16 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddControllers();
 builder.Services.AddSwaggerGen();
 
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowBlogFrontend", policyBuilder =>
+    {
+        policyBuilder.WithOrigins("https://blog.tsunyoku.xyz")
+            .AllowAnyHeader()
+            .AllowAnyMethod();
+    });
+});
+
 builder.Services.AddExceptionHandler<GlobalExceptionHandler>();
 builder.Services.AddProblemDetails();
 builder.Services.AddHttpContextAccessor();
@@ -37,6 +47,7 @@ if (app.Environment.IsDevelopment())
 }
 
 app.MapControllers();
+app.UseCors("AllowBlogFrontend");
 app.UseHttpsRedirection();
 app.UseExceptionHandler();
 
