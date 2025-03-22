@@ -34,15 +34,14 @@ if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
     app.UseSwaggerUI();
-
-    // apply migrations
-    using var scope = app.Services.CreateScope();
-    var dbContext = scope.ServiceProvider.GetRequiredService<BlogDbContext>();
-    dbContext.Database.Migrate();
 }
 
 app.MapControllers();
 app.UseHttpsRedirection();
 app.UseExceptionHandler();
+
+using var scope = app.Services.CreateScope();
+var dbContext = scope.ServiceProvider.GetRequiredService<BlogDbContext>();
+dbContext.Database.Migrate();
 
 app.Run();
