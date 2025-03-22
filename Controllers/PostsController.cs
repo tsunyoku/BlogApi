@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace BlogApi.Controllers;
 
-[Route("api/posts")]
+[Route("posts")]
 [ApiController]
 public class PostsController(IBlogRepository blogRepository) : ControllerBase
 {
