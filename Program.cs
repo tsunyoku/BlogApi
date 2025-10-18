@@ -1,5 +1,4 @@
 using BlogApi;
-using BlogApi.Abstractions;
 using BlogApi.Repositories;
 using Microsoft.EntityFrameworkCore;
 using Serilog;
@@ -17,7 +16,6 @@ builder.Services.AddDbContext<BlogDbContext>(options =>
         .UseNpgsql(builder.Configuration.GetConnectionString("Database"))
         .UseSnakeCaseNamingConvention());
 
-builder.Services.AddScoped<IBlogDbContext>(sp => sp.GetRequiredService<BlogDbContext>());
 builder.Services.AddScoped<IBlogRepository, BlogRepository>();
 
 builder.Services.AddEndpointsApiExplorer();

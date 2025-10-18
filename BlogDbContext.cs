@@ -1,11 +1,10 @@
-﻿using BlogApi.Abstractions;
-using BlogApi.Entities;
+﻿using BlogApi.Entities;
 using Microsoft.EntityFrameworkCore;
 
 namespace BlogApi;
 
 public class BlogDbContext(DbContextOptions<BlogDbContext> options)
-    : DbContext(options), IBlogDbContext
+    : DbContext(options)
 {
-    public DbSet<Blog> Blogs { get; set; } = null!;
+    public DbSet<Blog> Blogs { get; init; }
 }

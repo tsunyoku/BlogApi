@@ -1,10 +1,9 @@
-﻿using BlogApi.Abstractions;
-using BlogApi.Entities;
+﻿using BlogApi.Entities;
 using Microsoft.EntityFrameworkCore;
 
 namespace BlogApi.Repositories;
 
-public class BlogRepository(IBlogDbContext dbContext) : IBlogRepository
+public class BlogRepository(BlogDbContext dbContext) : IBlogRepository
 {
     public async Task<Blog> AddAsync(
         string title,
