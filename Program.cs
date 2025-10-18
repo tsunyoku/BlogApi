@@ -5,8 +5,12 @@ using Serilog;
 
 var builder = WebApplication.CreateBuilder(args);
 
-DotEnv.Load(Path.Combine(Directory.GetCurrentDirectory(), ".env"));
 builder.Configuration.AddEnvironmentVariables();
+
+if (builder.Environment.IsDevelopment())
+{
+    builder.Configuration.AddUserSecrets<Program>();
+}
 
 builder.Host.UseSerilog((context, configuration) =>
     configuration.ReadFrom.Configuration(context.Configuration));
