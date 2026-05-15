@@ -95,7 +95,8 @@ builder.Services.AddCors(options =>
     {
         policyBuilder.WithOrigins("https://blog.tsunyoku.xyz")
             .AllowAnyHeader()
-            .AllowAnyMethod();
+            .AllowAnyMethod()
+            .AllowCredentials();
     });
 });
 
