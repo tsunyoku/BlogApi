@@ -39,10 +39,17 @@ builder.Services.AddScoped<IBlogRepository, BlogRepository>();
 
 builder.Services.AddAuthentication(options =>
     {
-        options.DefaultScheme = CookieAuthenticationDefaults.AuthenticationScheme;
-        options.DefaultChallengeScheme = "osu";
+        options.DefaultScheme = "osu-cookie";
+        options.DefaultChallengeScheme = "osu-cookie";
     })
-    .AddCookie("osu-cookie")
+    .AddCookie("osu-cookie", options =>
+    {
+        options.Events.OnRedirectToLogin = context =>
+        {
+            context.Response.StatusCode = StatusCodes.Status401Unauthorized;
+            return Task.CompletedTask;
+        };
+    })
     .AddOAuth("osu", options =>
     {
         options.ClientId = osuSettings.ClientId;
