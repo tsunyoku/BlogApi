@@ -25,7 +25,9 @@ public class BlogRepository(BlogDbContext dbContext) : IBlogRepository
 
     public Task<List<Blog>> GetAsync(CancellationToken cancellationToken = default)
     {
-        return dbContext.Blogs.ToListAsync(cancellationToken);
+        return dbContext.Blogs
+            .OrderByDescending(b => b.PublishedAt)
+            .ToListAsync(cancellationToken);
     }
 
     public Task<Blog?> FindByIdAsync(Guid id, CancellationToken cancellationToken = default)
