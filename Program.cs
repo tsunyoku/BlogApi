@@ -30,6 +30,14 @@ builder.Services
 
 var osuSettings = builder.Configuration.GetSection("Osu").Get<OsuSettings>()!;
 
+builder.Services
+    .AddOptions<OwnerSettings>()
+    .Bind(builder.Configuration.GetSection("Owner"))
+    .ValidateDataAnnotations()
+    .ValidateOnStart();
+
+var ownerSettings = builder.Configuration.GetSection("Owner").Get<OwnerSettings>()!;
+
 builder.Services.AddDbContext<BlogDbContext>(options =>
     options
         .UseNpgsql(builder.Configuration.GetConnectionString("Database"))
@@ -91,6 +99,12 @@ builder.Services.AddAuthentication(options =>
 
         options.Validate();
     });
+
+builder.Services.AddAuthorization(options =>
+{
+    options.AddPolicy("Owner", policy =>
+        policy.RequireClaim(ClaimTypes.NameIdentifier, ownerSettings.UserId.ToString()));
+});
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddControllers();

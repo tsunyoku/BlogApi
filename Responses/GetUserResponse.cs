@@ -6,4 +6,5 @@ public class GetUserResponse
     public required string Username { get; init; }
     public required string AvatarUrl { get; init; }
     public required string CountryCode { get; init; }
+    public required bool IsOwner { get; init; }
 }

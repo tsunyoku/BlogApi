@@ -19,6 +19,7 @@ public class BlogRepository(BlogDbContext dbContext) : IBlogRepository
         };
 
         await dbContext.Blogs.AddAsync(blog, cancellationToken);
+        await dbContext.SaveChangesAsync(cancellationToken);
         return blog;
     }
 

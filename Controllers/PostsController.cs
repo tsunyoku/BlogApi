@@ -1,5 +1,7 @@
 ﻿using BlogApi.Entities;
 using BlogApi.Repositories;
+using BlogApi.Requests;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 
@@ -15,7 +17,17 @@ public class PostsController(IBlogRepository blogRepository) : ControllerBase
         return TypedResults.Ok(await blogRepository.GetAsync(cancellationToken));
     }
 
-    [HttpGet("{postId:guid}")]
+    [HttpPost]
+    [Authorize(Policy = "Owner")]
+    public async Task<Results<CreatedAtRoute<Blog>, ProblemHttpResult>> CreateBlog(
+        [FromBody] CreateBlogRequest request,
+        CancellationToken cancellationToken)
+    {
+        var blog = await blogRepository.AddAsync(request.Title, request.Content, cancellationToken);
+        return TypedResults.CreatedAtRoute(blog, nameof(FindBlogById), new { postId = blog.Id });
+    }
+
+    [HttpGet("{postId:guid}", Name = nameof(FindBlogById))]
     public async Task<Results<Ok<Blog>, NotFound, ProblemHttpResult>> FindBlogById(
         [FromRoute] Guid postId,
         CancellationToken cancellationToken)

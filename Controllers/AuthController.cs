@@ -1,9 +1,11 @@
 ﻿using System.Security.Claims;
+using BlogApi.Configuration;
 using BlogApi.Responses;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Options;
 
 namespace BlogApi.Controllers;
 
@@ -32,7 +34,7 @@ public class AuthController : ControllerBase
 
     [HttpGet("user")]
     [Authorize]
-    public Ok<GetUserResponse> GetUser()
+    public Ok<GetUserResponse> GetUser([FromServices] IOptions<OwnerSettings> ownerSettings)
     {
         var userId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier)!.Value);
         var username = User.FindFirst(ClaimTypes.Name)!.Value;
@@ -45,6 +47,7 @@ public class AuthController : ControllerBase
             Username = username,
             AvatarUrl = avatarUrl,
             CountryCode = countryCode,
+            IsOwner = userId == ownerSettings.Value.UserId,
         });
     }
 }
