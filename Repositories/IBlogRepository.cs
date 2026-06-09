@@ -12,4 +12,6 @@ public interface IBlogRepository
     Task<List<Blog>> GetAsync(CancellationToken cancellationToken = default);
 
     Task<Blog?> FindByIdAsync(Guid id, CancellationToken cancellationToken = default);
+    
+    Task DeleteAsync(Guid id, CancellationToken cancellationToken = default);
 }

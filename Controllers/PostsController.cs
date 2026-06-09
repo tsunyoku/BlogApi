@@ -35,4 +35,14 @@ public class PostsController(IBlogRepository blogRepository) : ControllerBase
         var blog = await blogRepository.FindByIdAsync(postId, cancellationToken);
         return blog is null ? TypedResults.NotFound() : TypedResults.Ok(blog);
     }
+
+    [HttpDelete("{postId:guid}")]
+    [Authorize(Policy = "Owner")]
+    public async Task<Results<NoContent, ProblemHttpResult>> DeleteBlog(
+        [FromRoute] Guid postId,
+        CancellationToken cancellationToken)
+    {
+        await blogRepository.DeleteAsync(postId, cancellationToken);
+        return TypedResults.NoContent();
+    }
 }

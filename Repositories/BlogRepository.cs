@@ -32,4 +32,11 @@ public class BlogRepository(BlogDbContext dbContext) : IBlogRepository
     {
         return dbContext.Blogs.FirstOrDefaultAsync(b => b.Id == id, cancellationToken);
     }
+
+    public Task DeleteAsync(Guid id, CancellationToken cancellationToken = default)
+    {
+        return dbContext.Blogs
+            .Where(b => b.Id == id)
+            .ExecuteDeleteAsync(cancellationToken);
+    }
 }
