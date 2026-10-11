@@ -125,6 +125,9 @@ builder.Services.AddExceptionHandler<GlobalExceptionHandler>();
 builder.Services.AddProblemDetails();
 builder.Services.AddHttpContextAccessor();
 
+builder.Services.AddHealthChecks()
+    .AddDbContextCheck<BlogDbContext>();
+
 var app = builder.Build();
 
 if (app.Environment.IsDevelopment())
@@ -133,11 +136,13 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
-app.MapControllers();
-app.UseCors("AllowBlogFrontend");
 app.UseExceptionHandler();
+app.UseCors("AllowBlogFrontend");
 app.UseAuthentication();
 app.UseAuthorization();
+
+app.MapHealthChecks("/health");
+app.MapControllers();
 
 using var scope = app.Services.CreateScope();
 var dbContext = scope.ServiceProvider.GetRequiredService<BlogDbContext>();
